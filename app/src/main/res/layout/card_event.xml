@@ -7,9 +7,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="5dp"
+            >
+            <TextView
+                android:id="@+id/eventNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Event"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/eventNameChannel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Channel"
+                android:textSize="10dp"/>
+        </LinearLayout>
         <ImageView
             android:id="@+id/eventImageView"
             android:layout_width="match_parent"
@@ -17,14 +35,51 @@
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder_image" />
 
-        <!-- Tambahkan elemen-elemen UI sesuai kebutuhan -->
-        <TextView
-            android:id="@+id/eventNameTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nama Event" />
-
-        <!-- Tambahan elemen UI lainnya sesuai kebutuhan -->
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="240px"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu Mulai" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="5dp"
+                    android:layout_height="wrap_content"
+                    android:text=":"/>
+                <TextView
+                    android:id="@+id/eventStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Start" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="240px"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu Selesai"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="5dp"
+                    android:layout_height="wrap_content"
+                    android:text=":"/>
+                <TextView
+                    android:id="@+id/eventEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Start" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

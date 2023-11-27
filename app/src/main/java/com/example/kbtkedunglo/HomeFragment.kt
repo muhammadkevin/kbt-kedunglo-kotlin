@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,6 +23,8 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +34,27 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun performRefresh() {
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView = view.findViewById(R.id.recyclerView)
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            getEventData()
+            swipeRefreshLayout.isRefreshing = false
+        }
+        getEventData()
+        return view
+    }
+
+    private fun getEventData(){
         val apiclient = ApiClient()
         apiclient.getData("https://kbt.us.to/events/listevent/",
             object: ApiResponseGet{
@@ -49,7 +66,7 @@ class HomeFragment : Fragment() {
                             val eventAdapter = EventAdapter(respArr)
                             recyclerView.layoutManager = layoutManager
                             recyclerView.adapter = eventAdapter
-                            Log.i("KBTAPP", "response get event: ${respArr.getJSONObject(0).get("logo")}")
+                            Log.i("KBTAPP", "response get event: ${respArr.getJSONObject(0)}")
                         } catch (e: Exception) {
                             Log.e("KBTAPP", e.message ?: "Error parsing response")
                         }
@@ -59,7 +76,6 @@ class HomeFragment : Fragment() {
                     Log.e("KBTAPP", error)
                 }
             })
-        return view
     }
 
     companion object {

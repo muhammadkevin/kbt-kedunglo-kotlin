@@ -1,9 +1,11 @@
 package com.example.kbtkedunglo
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -19,15 +21,14 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import org.json.JSONObject
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
 
-private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class EventFragment : Fragment() {
@@ -35,10 +36,12 @@ class EventFragment : Fragment() {
     private var param2: String? = null
     private var locationCallback:LocationCallback? = null
     private lateinit var mapView: MapView
-    private lateinit var locationManager: LocationManager
-    private lateinit var locationListener: LocationListener
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var fusedLocationClientFragment: FusedLocationProviderClient
     private var eventActive = false
+
+    private val sharedPreferences: SharedPreferences by lazy {
+        requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,17 +49,8 @@ class EventFragment : Fragment() {
             userId = it.getString("id")
             param2 = it.getString(ARG_PARAM2)
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        mapView = view.findViewById<MapView>(R.id.map)
-        mapView.setTileSource(TileSourceFactory.MAPNIK)
-        mapView.controller.setZoom(16.0)
-        mapView.controller.setCenter(GeoPoint(-7.8195106358, 112.007007986))
-        mapView.invalidate()
+        Log.i("KBTAPP", "userid: ${userId}")
+        fusedLocationClientFragment = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     override fun onCreateView(
@@ -65,38 +59,47 @@ class EventFragment : Fragment() {
     ): View? {
         val ctx = requireContext().applicationContext
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
+        return inflater.inflate(R.layout.fragment_event, container, false)
+    }
 
-        val view = inflater.inflate(R.layout.fragment_event, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-//        // Inisialisasi mapView sebelum pemanggilan findViewById
-//        mapView = view.findViewById<MapView>(R.id.map)
-//        mapView.setTileSource(TileSourceFactory.MAPNIK)
-//        mapView.controller.setZoom(15.0)
-//        mapView.controller.setCenter(GeoPoint(-7.8195106358, 112.007007986))
-//
-//        // Refresh peta
-//        mapView.invalidate()
+        mapView = view.findViewById<MapView>(R.id.map)
+        if(mapView != null){
+            mapView.setTileSource(TileSourceFactory.MAPNIK)
+            mapView.controller.setZoom(18.0)
+            mapView.controller.setCenter(GeoPoint(-7.8195106358, 112.007007986))
+            mapView.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+            mapView.setMultiTouchControls(true)
 
-        if (hasLocationPermission()) {
-            startLocationUpdates(false)
-        }
-
-        val startEv: Button = view.findViewById(R.id.coolButton)
-        startEv.setOnClickListener {
-            if (eventActive) {
-                startLocationUpdates(false)
-                startEv.text = "Start Event"
-            } else {
-                startLocationUpdates(true)
-                startEv.text = "Stop Event"
+            if (hasLocationPermission()) {
+                startLocationUpdates()
             }
-//
-        //            if (hasLocationPermission()) {
-//                startLocationUpdates(true)
-//            }
-        }
 
-        return view
+            val startEv: Button = view.findViewById(R.id.buttonEvent)
+            val startevent:String? = sharedPreferences.getString("start_event", "")
+            if(startevent?.toBoolean() ?:false)startEv.text = "Stop Event"
+            else startEv.text = "Start Event"
+            eventActive = startevent?.toBoolean() ?: false
+
+            startEv.setOnClickListener {
+                val editor = sharedPreferences.edit()
+                if (eventActive) {
+                    stopLocationService()
+                    eventActive = false
+                    editor.putString("start_event", false.toString())
+                    editor.apply()
+                    startEv.text = "Start Event"
+                } else {
+                    startLocationService()
+                    eventActive = true
+                    editor.putString("start_event", true.toString())
+                    editor.apply()
+                    startEv.text = "Stop Event"
+                }
+            }
+        }
     }
 
     private fun hasLocationPermission(): Boolean {
@@ -107,88 +110,81 @@ class EventFragment : Fragment() {
     }
 
     private fun updateMarkerLocation(location: Location) {
-        Log.i("KBTAPP", location.toString())
         val latitude = location.latitude
         val longitude = location.longitude
 
-//        if(mapView != null){
-            mapView.overlays.clear()
-            val currentLocation = GeoPoint(latitude, longitude)
+        if (mapView.overlays.isEmpty()) {
             val marker = Marker(mapView)
-            marker.position = currentLocation
+            marker.position = GeoPoint(latitude, longitude)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             mapView.overlays.add(marker)
-            mapView.controller.setCenter(currentLocation)
-            // Refresh peta
-            mapView.invalidate()
-//        }
-
+        }else{
+            val marker = mapView.overlays[0] as Marker
+            marker.position = GeoPoint(latitude, longitude)
+        }
+        mapView.controller.setCenter(GeoPoint(latitude, longitude))
+        mapView.invalidate()
     }
 
-    private fun uploadCoordinate(location: Location){
-        val apiclient = ApiClient()
-        apiclient.postData(
-            "https://kbt.us.to/tracker/post/",
-            """{"event": 4, "kbtuser": $userId, "lat": "${location.latitude}", "lon": "${location.longitude}", "alt": "${location.altitude}"}""",
-            object :ApiResponseCallback{
-                override fun onSuccess(jsonObject: JSONObject) {
-                    Log.i("KBTAPP", "Response: $jsonObject")
-                }
-                override fun onFailure(error: String) {
-                    Log.e("KBTPAPP","Error: $error")
-                }
-            }
-        )
+    private fun startLocationService() {
+        val serviceIntent = Intent(requireContext(), LocJobService::class.java)
+        serviceIntent.putExtra("userId", userId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requireContext().startForegroundService(serviceIntent)
+        } else {
+            requireContext().startService(serviceIntent)
+        }
     }
 
-    private fun startLocationUpdates(posted:Boolean) {
+    private fun stopLocationService() {
+        val serviceIntent = Intent(requireContext(), LocJobService::class.java)
+        requireContext().stopService(serviceIntent)
+    }
+
+    private fun startLocationUpdates() {
         try {
-            if(posted) eventActive = true
-            else eventActive = false
             val locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10000L)
+                .setInterval(20000L)
+                .setFastestInterval(20000L)
                 .setSmallestDisplacement(10f)
 
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     locationResult?.lastLocation?.let { location ->
                         updateMarkerLocation(location)
-                        if(posted) uploadCoordinate(location)
                     }
                 }
             }
 
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+            fusedLocationClientFragment.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
         } catch (e: SecurityException) {
-            e.printStackTrace()
+            Log.e("KBTAPP", e.message.toString())
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopLocationUpdates()
-        locationCallback?.let {
-            fusedLocationClient.removeLocationUpdates(it)
-        }
-    }
-
-    private fun stopLocationUpdates() {
         mapView.overlays.clear()
         mapView.invalidate()
         locationCallback?.let {
-            fusedLocationClient.removeLocationUpdates(it)
+            fusedLocationClientFragment.removeLocationUpdates(it)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause() // Untuk menghentikan pembaruan peta ketika fragmen tidak terlihat
+        mapView.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume() // Untuk melanjutkan pembaruan peta ketika fragmen terlihat kembali
+        mapView.onResume()
     }
 
     companion object {

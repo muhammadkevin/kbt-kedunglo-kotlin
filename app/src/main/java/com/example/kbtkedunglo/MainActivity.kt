@@ -1,6 +1,7 @@
 package com.example.kbtkedunglo
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,6 +10,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,13 +35,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
+            if (hasLocationPermission()) {
+                checkGpsStatus()
+            } else {
+                requestLocationPermission()
+            }
             //inisialiasai page
             val btmNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
             if(savedInstanceState == null){
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, HomeFragment())
                     .commit()
-
+                btmNav.selectedItemId = R.id.menu_home
             }
             btmNav.setOnItemSelectedListener { item ->
                 when(item.itemId){
@@ -56,14 +63,20 @@ class MainActivity : AppCompatActivity() {
                             .commit()
                         true
                     }
+                    R.id.menu_profil -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, ProfilFragment())
+                            .commit()
+                        true
+                    }
+                    R.id.menu_setting -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, SettingFragment())
+                            .commit()
+                        true
+                    }
                     else -> false
                 }
-            }
-
-            if (hasLocationPermission()) {
-                checkGpsStatus()
-            } else {
-                requestLocationPermission()
             }
         }
     }
@@ -88,19 +101,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val gpsActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {res->
+            Log.i("KBTAPP", res.resultCode.toString())
+            if (res.resultCode == 0 || res.resultCode == Activity.RESULT_OK) {
+                if (!isGpsEnabled()) showGpsDisabledAlert()
+            }
+        }
     private fun showGpsDisabledAlert() {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setMessage("GPS is disabled. Do you want to enable it?")
-        alertDialogBuilder.setPositiveButton("Yes") { dialog, id ->
-            // Buka pengaturan untuk mengaktifkan GPS
+        alertDialogBuilder.setMessage("GPS anda mati. Hidupkan GPS sekarang?")
+        alertDialogBuilder.setPositiveButton("Ya") { dialog, id ->
             val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivity(settingsIntent)
+            gpsActivityResultLauncher.launch(settingsIntent)
         }
-        alertDialogBuilder.setNegativeButton("No") { dialog, id ->
-            // Tangani penolakan oleh pengguna, sesuai kebutuhan Anda
+        alertDialogBuilder.setNegativeButton("Tidak") { dialog, id ->
+            showGpsDisabledAlert()
         }
         val alert = alertDialogBuilder.create()
         alert.show()
+    }
+
+    private fun isGpsEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -108,7 +133,6 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Izin diberikan, dapatkan lokasi
                 checkGpsStatus()
             } else {
                 Log.i("error", "ditolak")

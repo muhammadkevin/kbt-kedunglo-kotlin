@@ -8,7 +8,12 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_search"
-        android:title="Search" />
+        android:id="@+id/menu_profil"
+        android:icon="@drawable/ic_profil"
+        android:title="Profil" />
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="Setting"
+        />
 </menu>

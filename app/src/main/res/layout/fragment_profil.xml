@@ -1,0 +1,42 @@
+<!-- res/layout/fragment_profil.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Separuh atas berwarna merah -->
+    <View
+        android:id="@+id/redView"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_weight="1"
+        android:background="#FF0000" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="140dp"
+        android:src="@drawable/profilkosongl" />
+
+    <!-- CardView di bawah gambar profil -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileImage"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="8dp"
+        android:background="#FFF">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:text="Username" />
+        <!-- Isi CardView -->
+        <!-- Gantilah dengan elemen-elemen yang sesuai dengan kontennya -->
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
