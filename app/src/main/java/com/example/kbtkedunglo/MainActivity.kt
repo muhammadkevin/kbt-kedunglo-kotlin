@@ -14,75 +14,111 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import com.example.kbtkedunglo.fragments.DetailAfterMedalFragment
+import com.example.kbtkedunglo.fragments.EventFragment
+import com.example.kbtkedunglo.fragments.HomeFragment
+import com.example.kbtkedunglo.fragments.ProfilFragment
+import com.example.kbtkedunglo.fragments.SettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
+    private lateinit var activeFragment:Fragment
+    private lateinit var btmNav: BottomNavigationView
     private val sharedPreferences: SharedPreferences by lazy {
         getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val savedUsername:String? = sharedPreferences.getString("username", "")
-        val savedPassword:String? = sharedPreferences.getString("password", "")
-        val idUser:String? = sharedPreferences.getString("id", "")
+        btmNav = findViewById(R.id.bottomNavigationView)
 
-
-        if (savedUsername.isNullOrEmpty() && savedPassword.isNullOrEmpty()) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        if (hasLocationPermission()) {
+            checkGpsStatus()
         } else {
-            if (hasLocationPermission()) {
-                checkGpsStatus()
-            } else {
-                requestLocationPermission()
-            }
-            //inisialiasai page
-            val btmNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
-            if(savedInstanceState == null){
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, HomeFragment())
-                    .commit()
-                btmNav.selectedItemId = R.id.menu_home
-            }
-            btmNav.setOnItemSelectedListener { item ->
-                when(item.itemId){
-                    R.id.menu_event -> {
-                        val eventFragment = EventFragment.newInstance(idUser.orEmpty())
+            requestLocationPermission()
+        }
+
+        //inisialiasai page
+        val btmNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        if(savedInstanceState == null){
+            activeFragment = HomeFragment()
+            supportFragmentManager.beginTransaction()
+               .setCustomAnimations(R.anim.slide_out, R.anim.slide_in)
+               .replace(R.id.fragment_container, HomeFragment())
+               .commit()
+            changeSelectedItemId(R.id.menu_home)
+        }
+        btmNav.setOnItemSelectedListener { item ->
+            when(item.itemId){
+                R.id.menu_event -> {
+                    val followEvent:String? = sharedPreferences.getString("follow_event", "")
+                    if(followEvent != null && followEvent.toBoolean()){
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, eventFragment)
-                            .commit()
-                        true
-                    }
-                    R.id.menu_home -> {
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.fragment_container, DetailAfterMedalFragment())
+                        .commit()
+                        activeFragment = DetailAfterMedalFragment()
+                    }else{
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, HomeFragment())
-                            .commit()
-                        true
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.fragment_container, EventFragment())
+                        .commit()
+                        activeFragment = EventFragment()
                     }
-                    R.id.menu_profil -> {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, ProfilFragment())
-                            .commit()
-                        true
-                    }
-                    R.id.menu_setting -> {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, SettingFragment())
-                            .commit()
-                        true
-                    }
-                    else -> false
+                    true
                 }
+                R.id.menu_home -> {
+                    if (activeFragment is EventFragment || activeFragment is DetailAfterMedalFragment) {
+                        supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.fragment_container, HomeFragment()).commit()
+                    } else {
+                        supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.fragment_container, HomeFragment()).commit()
+                    }
+                    activeFragment = HomeFragment()
+                    true
+
+                }
+                R.id.menu_profil -> {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.fragment_container, ProfilFragment())
+                        .commit()
+                    activeFragment = ProfilFragment()
+                    true
+                }
+                R.id.menu_setting -> {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                        .replace(R.id.fragment_container, SettingFragment())
+                        .commit()
+                    activeFragment = SettingFragment()
+                    true
+                }
+                else -> false
             }
         }
+
+    }
+
+    fun changeSelectedItemId(menu: Int) {
+        btmNav.selectedItemId = menu
     }
 
     private fun hasLocationPermission(): Boolean {
         return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun toggleBottomNavigationVisibility(visibility: Int) {
+        val btmNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        btmNav.visibility = visibility
     }
 
     private fun requestLocationPermission() {
@@ -139,6 +175,10 @@ class MainActivity : AppCompatActivity() {
                 requestLocationPermission()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }

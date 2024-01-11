@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColor">#DEDCDC</color>
+    <color name="editText">#3F4158</color>
+    <color name="windowColor">#0B141A</color>
+    <color name="btColor">#009F44</color>
+    <color name="btDangerColor">#f7365d</color>
+    <color name="btPrimaryTextColor">#DEDCDC</color>
+    <color name="errortext">#f7365d</color>
+    <color name="semitransbg">#B2111425</color>
+    <color name="cardBgColor1">#202C33</color>
+</resources>

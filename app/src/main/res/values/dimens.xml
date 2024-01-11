@@ -1,3 +1,7 @@
 <resources>
-      <dimen name="fab_margin">16dp</dimen>
-   </resources>
+        <dimen name="fab_margin">16dp</dimen>
+        <dimen name="photo_size">130dp</dimen>
+        <dimen name="paddingPage">17dp</dimen>
+        <dimen name="pdHorizontalMapNav">17dp</dimen>
+        <dimen name="pdVerticalMapNav">17dp</dimen>
+</resources>

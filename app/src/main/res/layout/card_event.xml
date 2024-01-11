@@ -1,7 +1,10 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/cardBgColor1">
 
     <!-- Konten kartu -->
     <LinearLayout
@@ -11,22 +14,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="5dp"
-            >
-            <TextView
-                android:id="@+id/eventNameTextView"
+            android:orientation="horizontal">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Event"
-                android:textSize="16dp" />
-            <TextView
-                android:id="@+id/eventNameChannel"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="5dp">
+                <TextView
+                    android:id="@+id/eventNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Event"
+                    android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/eventNameChannel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Channel"
+                    android:textSize="10dp"/>
+            </LinearLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btsubscribeevent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Channel"
-                android:textSize="10dp"/>
+                android:paddingHorizontal="10dp"
+                android:text="Ikuti Event"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"/>
         </LinearLayout>
         <ImageView
             android:id="@+id/eventImageView"

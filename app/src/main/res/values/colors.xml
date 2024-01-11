@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="textColor">#434242</color>
+    <color name="editText">#DFDFDF</color>
+    <color name="windowColor">#F0F2F5</color>
+    <color name="btColor">#009F44</color>
+    <color name="btDangerColor">#f7365d</color>
+    <color name="btPrimaryTextColor">#DEDCDC</color>
+    <color name="errortext">#f7365d</color>
+    <color name="semitransbg">#B2FFFFFF</color>
+    <color name="cardBgColor1">#FFFFFF</color>
 </resources>

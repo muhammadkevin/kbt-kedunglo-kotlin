@@ -1,25 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".EventFragment"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.EventFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/relativeall"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="129dp">
+
         <org.osmdroid.views.MapView
-            android:id="@+id/map"
+            android:id="@+id/mapViewEvent"
             android:layout_width="match_parent"
-            android:layout_height="400dp"/>
-            <Button
-                android:id="@+id/buttonEvent"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="1dp"/>
+
+        <LinearLayout
+            android:elevation="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:background="@color/semitransbg">
+            <!-- popup event -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mulai Event"
-                android:background="@drawable/primary_button_bg"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_gravity="bottom|center_horizontal"/>
-    </FrameLayout>
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:id="@+id/wrapdetailevent"
+                android:paddingHorizontal="@dimen/paddingPage">
+                <LinearLayout
+                    android:id="@+id/layoutsttsubevent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ikut Event : "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/subscribeeventstt"
+                        android:layout_marginRight="10dp"/>
+
+                    <Button
+                        android:id="@+id/unsubscribeevent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Batal"
+                        android:theme="@style/button_danger"
+                        app:cornerRadius="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingVertical="4dp"
+                        android:paddingHorizontal="8dp"
+                        android:textColor="@color/btPrimaryTextColor"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:paddingVertical="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rute Event : "/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <ProgressBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="17dp"
+                            android:minWidth="150dp"
+                            android:id="@+id/progressBar"
+                            android:visibility="gone"
+                            style="@android:style/Widget.ProgressBar.Horizontal"/>
+
+                        <TextView
+                            android:id="@+id/routestatustext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="10dp"
+                            android:text="Tidak Ada Rute"
+                            android:gravity="center_vertical"/>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/reloadroute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reload"
+                        android:theme="@style/button_primary"
+                        android:textColor="@color/btPrimaryTextColor"
+                        app:cornerRadius="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingVertical="4dp"
+                        android:paddingHorizontal="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/distancetoeventwrap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="5dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jarak Ke Jalan Event"/>
+                    <TextView
+                        android:id="@+id/distancetoevent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"/>
+                    <Button
+                        android:id="@+id/routetoevent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="rute ke event"
+                        android:theme="@style/button_primary"
+                        android:textColor="@color/btPrimaryTextColor"
+                        app:cornerRadius="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingVertical="4dp"
+                        android:paddingHorizontal="8dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- end popup event -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/timertextview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textSize="20dp"
+                        android:textColor="@color/textColor"
+                        android:padding="@dimen/paddingPage"/>
+                    <TextView
+                        android:id="@+id/speedAvgView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0 km/jam"
+                        android:textSize="20dp"
+                        android:textColor="@color/textColor"
+                        android:paddingRight="@dimen/paddingPage"
+                        android:paddingVertical="@dimen/paddingPage"/>
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/detailbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/pdHorizontalMapNav"
+                    android:paddingVertical="@dimen/pdVerticalMapNav"
+                    android:src="@drawable/ic_task"/>
+                <ImageView
+                    android:id="@+id/fullscreenbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/pdHorizontalMapNav"
+                    android:paddingVertical="@dimen/pdVerticalMapNav"
+                    android:src="@drawable/ic_fullscreen"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/paddingPage"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/paddingPage"
+        android:layout_marginRight="@dimen/paddingPage">
+        <Button
+            android:id="@+id/watchEvent"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:paddingVertical="0dp"
+            android:textColor="@color/btColor"
+            android:textSize="14sp"
+            android:background="@drawable/kbtcomp_round_button"
+            android:theme="@style/button_primary" />
+
+        <ImageView
+            android:id="@+id/imageWatchEvent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_flag" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="17dp">
+
+        <Button
+            android:id="@+id/buttonEvent"
+            android:layout_width="97dp"
+            android:layout_height="97dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:background="@drawable/kbtcomp_round_button"
+            android:text="Mulai"
+            android:maxLines="1"
+            android:textColor="@color/btColor"
+            android:textSize="12sp"
+            android:theme="@style/button_primary"/>
+
+        <RelativeLayout
+            android:id="@+id/pauseView"
+            android:layout_marginLeft="@dimen/paddingPage"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btPause"
+                android:layout_width="97dp"
+                android:layout_height="97dp"
+                android:paddingVertical="0dp"
+                android:textColor="@color/btColor"
+                android:background="@drawable/kbtcomp_round_button"
+                android:theme="@style/button_primary" />
+            <ImageView
+                android:id="@+id/imageViewCenter"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pause" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/resumeView"
+            android:layout_marginLeft="@dimen/paddingPage"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btResume"
+                android:layout_width="97dp"
+                android:layout_height="97dp"
+                android:paddingVertical="0dp"
+                android:textColor="@color/btColor"
+                android:background="@drawable/kbtcomp_round_button"
+                android:theme="@style/button_primary" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_resume" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/paddingPage"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/paddingPage"
+        android:layout_marginRight="@dimen/paddingPage">
+        <Button
+            android:id="@+id/focusMe"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:paddingVertical="0dp"
+            android:textColor="@color/btColor"
+            android:textSize="14sp"
+            android:background="@drawable/kbtcomp_round_button"
+            android:theme="@style/button_primary" />
+        <ImageView
+            android:id="@+id/imagefocusme"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_nav" />
+    </RelativeLayout>
+
+</RelativeLayout>

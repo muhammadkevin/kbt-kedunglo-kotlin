@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.DetailAfterMedalFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/paddingPage"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/judulMedal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/editText"
+            android:hint="Judul Medal"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/textColor"
+            android:paddingVertical="12dp"
+            android:textSize="15dp"
+            android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/descriptionMedal"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/editText"
+            android:hint="Deskripsi Medal"
+            android:text="Aktivitas medal ku hari ini"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/textColor"
+            android:paddingVertical="12dp"
+            android:textSize="15dp"
+            android:gravity="top"
+            android:inputType="text|textMultiLine"/>
+        <Button
+            android:id="@+id/btnSimpanMedal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Simpan Medal"
+            android:paddingVertical="14dp"
+            android:textColor="@color/btPrimaryTextColor"
+            android:theme="@style/button_primary"
+            app:cornerRadius="0dp" />
+    </LinearLayout>
+
+</RelativeLayout>

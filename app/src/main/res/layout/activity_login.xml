@@ -1,42 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
-        tools:context=".LoginActivity">
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="-36dp">
 
-        <EditText
-            android:id="@+id/editTextUsername"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="username"
-            android:hint="Username"/>
+            android:src="@drawable/dark_bg_login"
+            android:elevation="1dp"
+            android:scaleType="centerCrop"/>
 
-        <EditText
-            android:id="@+id/editTextPassword"
+        <ImageView
+            android:id="@+id/imagebglogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextUsername"
-            android:layout_marginTop="8dp"
-            android:inputType="textPassword"
-            android:autofillHints="password"
-            android:hint="Password"/>
+            android:layout_alignParentTop="true"
+            android:src="@drawable/logo"
+            android:elevation="2dp"
+            android:scaleType="fitEnd"/>
 
-        <Button
-            android:id="@+id/btnLogin"
+        <LinearLayout
+            android:id="@+id/wrappercontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editTextPassword"
-            android:layout_marginTop="16dp"
-            android:text="Login"/>
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="@dimen/paddingPage"
+            android:elevation="2dp">
+
+            <EditText
+                android:id="@+id/editTextUsernameLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:background="@color/editText"
+                android:hint="Username"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/textColor"
+                android:paddingVertical="12dp"
+                android:textSize="15dp"  />
+
+            <TextView
+                android:id="@+id/errorMessageUsernameLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:textColor="@color/errortext" />
+
+            <RelativeLayout
+                android:id="@+id/wrapPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/eyeIconLogin"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="7dp"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_eye"
+                    android:background="#00FFFFFF"/>
+
+                <EditText
+                    android:id="@+id/editTextPasswordLogin"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:elevation="1dp"
+                    android:background="@color/editText"
+                    android:hint="Password"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@color/textColor"
+                    android:paddingVertical="12dp"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/errorMessagePasswordLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/errortext" />
+
+            <Button
+                android:id="@+id/btnSubmitLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Login"
+                android:paddingVertical="14dp"
+                android:textColor="@color/btPrimaryTextColor"
+                android:theme="@style/button_primary"
+                app:cornerRadius="0dp" />
+        </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
