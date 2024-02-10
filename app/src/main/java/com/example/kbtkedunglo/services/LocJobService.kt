@@ -19,7 +19,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.kbtkedunglo.R
-import com.example.kbtkedunglo.fragments.EventFragment
+import com.example.kbtkedunglo.pages.record.MedalFragment
 import com.example.kbtkedunglo.utilsclass.ApiClient
 import com.example.kbtkedunglo.utilsclass.ApiResponseCallback
 import com.example.kbtkedunglo.utilsclass.FileCreatedEvent
@@ -138,7 +138,7 @@ class LocJobService : JobService(){
             notificationManager.createNotificationChannel(channel)
         }
 
-        val notificationIntent = Intent(this, EventFragment::class.java)
+        val notificationIntent = Intent(this, MedalFragment::class.java)
         val pendingIntent = PendingIntent.getActivity(
             this, 0, notificationIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

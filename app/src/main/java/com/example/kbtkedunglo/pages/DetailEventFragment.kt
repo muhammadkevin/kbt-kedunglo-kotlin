@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -73,7 +73,7 @@ class DetailEventFragment : Fragment() {
         statusMeTxt.text = "Status Saya"
 
         buttonRoute.setOnClickListener {
-            (activity as? MainActivity)?.changeSelectedItemId(R.id.menu_event)
+            (activity as? MainActivity)?.changeSelectedItemId(R.id.menu_medal)
         }
     }
 

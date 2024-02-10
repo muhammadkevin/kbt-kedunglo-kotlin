@@ -1,0 +1,56 @@
+<!-- res/layout/profil_fragment_profil.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/barTop"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="@color/btColor"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/paddingPage">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/namaText"
+            android:text="username"
+            android:textColor="@color/editText"/>
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_search"
+                android:layout_below="@+id/profileImage"
+                android:layout_marginRight="@dimen/paddingPage"/>
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_setting" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_below="@+id/barTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/btColor"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager2"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tab_layout"/>
+
+</RelativeLayout>

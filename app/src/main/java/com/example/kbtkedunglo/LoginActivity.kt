@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
             if (isValidLogin(username, password)) {
                 val apiclient = ApiClient()
                 apiclient.postData(
-                    "https://kbt.us.to/api/token/",
+                    "https://kbt.us.to/geni/token/",
                     """{"username": "$username", "password": "$password"}""",
                     object : ApiResponseCallback {
                         override fun onSuccess(jsonObject: JSONObject, codeRes:Int) {

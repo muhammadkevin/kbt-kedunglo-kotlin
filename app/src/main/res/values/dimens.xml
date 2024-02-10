@@ -4,4 +4,5 @@
         <dimen name="paddingPage">17dp</dimen>
         <dimen name="pdHorizontalMapNav">17dp</dimen>
         <dimen name="pdVerticalMapNav">17dp</dimen>
+        <dimen name="distanceKontent">13dp</dimen>
 </resources>

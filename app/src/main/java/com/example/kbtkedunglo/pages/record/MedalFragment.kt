@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages.record
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -33,6 +33,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.example.kbtkedunglo.MainActivity
 import com.example.kbtkedunglo.R
+import com.example.kbtkedunglo.pages.DetailAfterMedalFragment
 import com.example.kbtkedunglo.services.LocJobService
 import com.example.kbtkedunglo.services.MedalOfflineDatabase
 import com.example.kbtkedunglo.utilsclass.ApiClient
@@ -82,7 +83,7 @@ import kotlin.math.abs
 import kotlin.math.atan2
 
 
-class EventFragment : Fragment() {
+class MedalFragment : Fragment() {
     private var userId: String? = null                      //DATA INITALIZE
     private var eventId: String? = null
     private var fotoUrl:String? = null
@@ -188,7 +189,7 @@ class EventFragment : Fragment() {
     ): View? {
         val ctx = context.applicationContext
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx))
-        val view = inflater.inflate(R.layout.fragment_event, container, false)
+        val view = inflater.inflate(R.layout.fragment_medal, container, false)
         mapView = view?.findViewById(R.id.mapViewEvent)                                 //MAP
         rotateMarker = RotateMarker(mapView, marker)                                    //UTIL
         locationMarker = LocationMarker(mapView, marker, userControlMap)

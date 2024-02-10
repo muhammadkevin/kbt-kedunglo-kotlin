@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages
 
 import android.annotation.SuppressLint
 import android.os.Bundle

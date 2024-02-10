@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages
 
 import android.content.Context
 import android.os.Bundle
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 
 
-class TimeLineMeFragment : Fragment() {
+class StatusTimeLineFragment : Fragment() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerView:RecyclerView
     private var userId:String? = null
@@ -89,7 +89,7 @@ class TimeLineMeFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(userId: String?) =
-            TimeLineMeFragment().apply {
+            StatusTimeLineFragment().apply {
                 arguments = Bundle().apply {
                     putString("userId", userId)
                 }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.EventFragment"
+    tools:context=".pages.record.MedalFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -199,7 +199,7 @@
             android:paddingVertical="0dp"
             android:textColor="@color/btColor"
             android:textSize="14sp"
-            android:background="@drawable/kbtcomp_round_button"
+            android:background="@drawable/kbtcomp_round_main_button"
             android:theme="@style/button_primary" />
 
         <ImageView
@@ -223,7 +223,7 @@
             android:layout_width="97dp"
             android:layout_height="97dp"
             app:layout_constraintDimensionRatio="1:1"
-            android:background="@drawable/kbtcomp_round_button"
+            android:background="@drawable/kbtcomp_round_main_button"
             android:text="Mulai"
             android:maxLines="1"
             android:textColor="@color/btColor"
@@ -242,7 +242,7 @@
                 android:layout_height="97dp"
                 android:paddingVertical="0dp"
                 android:textColor="@color/btColor"
-                android:background="@drawable/kbtcomp_round_button"
+                android:background="@drawable/kbtcomp_round_main_button"
                 android:theme="@style/button_primary" />
             <ImageView
                 android:id="@+id/imageViewCenter"
@@ -264,7 +264,7 @@
                 android:layout_height="97dp"
                 android:paddingVertical="0dp"
                 android:textColor="@color/btColor"
-                android:background="@drawable/kbtcomp_round_button"
+                android:background="@drawable/kbtcomp_round_main_button"
                 android:theme="@style/button_primary" />
             <ImageView
                 android:layout_width="30dp"
@@ -289,7 +289,7 @@
             android:paddingVertical="0dp"
             android:textColor="@color/btColor"
             android:textSize="14sp"
-            android:background="@drawable/kbtcomp_round_button"
+            android:background="@drawable/kbtcomp_round_main_button"
             android:theme="@style/button_primary" />
         <ImageView
             android:id="@+id/imagefocusme"

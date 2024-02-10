@@ -9,9 +9,12 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kbtkedunglo.R
-import com.example.kbtkedunglo.fragments.DetailTimeLineFragment
+import com.example.kbtkedunglo.pages.DetailTimeLineFragment
+import com.example.kbtkedunglo.pages.reusable.CommentPostFragment
+import com.example.kbtkedunglo.pages.reusable.LikePostFragment
 import com.example.kbtkedunglo.utilsclass.formatDurationMedal
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -42,11 +45,18 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
         val wrapContent:LinearLayout = itemView.findViewById(R.id.wrapContent)
         val wrapMap:RelativeLayout = itemView.findViewById(R.id.wrapMap)
         val descriptionEvent:TextView = itemView.findViewById(R.id.descriptionEvent)
+        val btLike:RelativeLayout = itemView.findViewById(R.id.btLike)
+        val btComment:RelativeLayout = itemView.findViewById(R.id.btComment)
+        val btShare:RelativeLayout = itemView.findViewById(R.id.btShare)
+        val imgLike:ImageView = itemView.findViewById(R.id.imgLike)
+        val imgComment:ImageView = itemView.findViewById(R.id.imgComment)
+        val imgShare:ImageView = itemView.findViewById(R.id.imgShare)
+        val whoLike:LinearLayout = itemView.findViewById(R.id.whoLike)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeLineViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.card_my_timeline, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.card_timeline, parent, false)
         return TimeLineViewHolder(view)
     }
 
@@ -119,6 +129,7 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
                 holder.profilImage.setImageResource(R.drawable.profilkosongl)
             }
 
+            // CLICK LISTENER
             holder.wrapContent.setOnClickListener {
                 val fragment = DetailTimeLineFragment.newInstance(
                     kbtuserid, eventid, nama, eventName, detailtimeR, jaraktempuhR, avgspeedR, elevationR,
@@ -132,10 +143,36 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
             holder.wrapMap.setOnClickListener {
                 Log.d("KBTAPP", "KLIK DI MAP")
             }
+            holder.whoLike.setOnClickListener { whoLikePost() }
+            holder.btLike.setOnClickListener { likePost() }
+            holder.btComment.setOnClickListener { commentPost() }
+            holder.btShare.setOnClickListener { sharePost() }
         } catch (e: Exception) {
             Log.e("KBTAPP", e.message.toString())
             e.printStackTrace()
         }
+    }
+
+    private fun whoLikePost(){
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, LikePostFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    private fun likePost(){
+        Log.v("KBTAPP", "Like Post")
+    }
+
+    private fun commentPost(){
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, CommentPostFragment())
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    private fun sharePost(){
+        Log.v("KBTAPP", "Share Post")
     }
 
     override fun getItemCount(): Int {

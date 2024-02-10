@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages
 
 import android.content.Context
 import android.content.Intent
@@ -76,7 +76,7 @@ class DetailAfterMedalFragment : Fragment() {
 
     private fun uploadTxtDone(){
         val activity = requireActivity()
-        val fragment = TimeLineMeFragment.newInstance(userId)
+        val fragment = StatusTimeLineFragment.newInstance(userId)
         activity.supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
             .replace(R.id.fragment_container, fragment)

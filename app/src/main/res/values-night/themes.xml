@@ -20,5 +20,20 @@
 
     <style name="menu_bottom" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/windowColor</item>
+<!--        <item name="android:focusable">@color/windowColor</item>-->
+<!--        <item name="android:clickable">@color/windowColor</item>-->
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="KBT_BottomNavigationTextActive" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="KBT_BottomNavigationTextInactive" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
     </style>
 </resources>

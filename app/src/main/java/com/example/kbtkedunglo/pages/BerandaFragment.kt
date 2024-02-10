@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.fragments
+package com.example.kbtkedunglo.pages
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import kotlin.math.abs
 
-class HomeFragment : Fragment(), CarousellEventClickListener {
+class BerandaFragment : Fragment(), CarousellEventClickListener {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -56,7 +56,7 @@ class HomeFragment : Fragment(), CarousellEventClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_beranda, container, false)
         wrapViewPager = view.findViewById(R.id.wrapViewPager)
         viewPager = view.findViewById(R.id.viewPager2)
         viewPager.increaseDragSensitivity(4)
@@ -68,7 +68,7 @@ class HomeFragment : Fragment(), CarousellEventClickListener {
             getEventData()
             swipeRefreshLayout.isRefreshing = false
         }
-        adapterCarousel = CarouselEventAdapter(context, null, this@HomeFragment)
+        adapterCarousel = CarouselEventAdapter(context, null, this@BerandaFragment)
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -122,7 +122,7 @@ class HomeFragment : Fragment(), CarousellEventClickListener {
                                 val respArr = JSONArray(response)
                                 if(respArr.length() > 0){
                                     adapterCarousel =
-                                        CarouselEventAdapter(context, respArr, this@HomeFragment)
+                                        CarouselEventAdapter(context, respArr, this@BerandaFragment)
                                     viewPager.offscreenPageLimit = 2
                                     viewPager.adapter = adapterCarousel
                                     TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -178,7 +178,7 @@ class HomeFragment : Fragment(), CarousellEventClickListener {
 
     companion object {
         fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
+            BerandaFragment().apply {
                 arguments = Bundle().apply {}
             }
     }

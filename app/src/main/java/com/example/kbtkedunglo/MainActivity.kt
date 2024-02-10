@@ -15,11 +15,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.example.kbtkedunglo.fragments.DetailAfterMedalFragment
-import com.example.kbtkedunglo.fragments.EventFragment
-import com.example.kbtkedunglo.fragments.HomeFragment
-import com.example.kbtkedunglo.fragments.ProfilFragment
-import com.example.kbtkedunglo.fragments.SettingFragment
+import com.example.kbtkedunglo.pages.BerandaFragment
+import com.example.kbtkedunglo.pages.DetailAfterMedalFragment
+import com.example.kbtkedunglo.pages.record.MedalFragment
+import com.example.kbtkedunglo.pages.profil.ProfilFragment
+import com.example.kbtkedunglo.pages.kbt.KBTFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1
     private lateinit var activeFragment:Fragment
     private lateinit var btmNav: BottomNavigationView
+    private lateinit var selectedPage:String
     private val sharedPreferences: SharedPreferences by lazy {
         getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
     }
@@ -46,61 +47,61 @@ class MainActivity : AppCompatActivity() {
         //inisialiasai page
         val btmNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         if(savedInstanceState == null){
-            activeFragment = HomeFragment()
+            selectedPage = "beranda"
+            activeFragment = BerandaFragment()
             supportFragmentManager.beginTransaction()
-               .setCustomAnimations(R.anim.slide_out, R.anim.slide_in)
-               .replace(R.id.fragment_container, HomeFragment())
+
+               .replace(R.id.fragment_container, BerandaFragment())
                .commit()
-            changeSelectedItemId(R.id.menu_home)
+            changeSelectedItemId(R.id.menu_beranda)
         }
         btmNav.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.menu_event -> {
-                    val followEvent:String? = sharedPreferences.getString("follow_event", "")
-                    if(followEvent != null && followEvent.toBoolean()){
+                R.id.menu_beranda -> {
+                    if(selectedPage != "beranda"){
+                        selectedPage = "beranda"
                         supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.fragment_container, DetailAfterMedalFragment())
-                        .commit()
-                        activeFragment = DetailAfterMedalFragment()
-                    }else{
-                        supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.fragment_container, EventFragment())
-                        .commit()
-                        activeFragment = EventFragment()
-                    }
-                    true
+                            .replace(R.id.fragment_container, BerandaFragment()).commit()
+                        true
+                    }else false
                 }
-                R.id.menu_home -> {
-                    if (activeFragment is EventFragment || activeFragment is DetailAfterMedalFragment) {
+                R.id.menu_medal -> {
+                    if(selectedPage != "medal"){
+                        selectedPage = "medal"
+                        val followEvent:String? = sharedPreferences.getString("follow_event", "")
+                        if(followEvent != null && followEvent.toBoolean()){
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, DetailAfterMedalFragment())
+                                .commit()
+                            activeFragment = DetailAfterMedalFragment()
+                        }else{
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, MedalFragment())
+                                .commit()
+                            activeFragment = MedalFragment()
+                        }
+                        true
+                    }else false
+                }
+                R.id.menu_kbt -> {
+                    if(selectedPage != "kbt"){
+                        selectedPage = "kbt"
                         supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragment_container, HomeFragment()).commit()
-                    } else {
-                        supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.fragment_container, HomeFragment()).commit()
-                    }
-                    activeFragment = HomeFragment()
-                    true
-
+                            .replace(R.id.fragment_container, KBTFragment())
+                            .commit()
+                        activeFragment = KBTFragment()
+                        true
+                    }else false
                 }
                 R.id.menu_profil -> {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragment_container, ProfilFragment())
-                        .commit()
-                    activeFragment = ProfilFragment()
-                    true
-                }
-                R.id.menu_setting -> {
-                    supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                        .replace(R.id.fragment_container, SettingFragment())
-                        .commit()
-                    activeFragment = SettingFragment()
-                    true
+                    if(selectedPage != "layout/profil"){
+                        selectedPage = "layout/profil"
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, ProfilFragment())
+                            .commit()
+                        activeFragment = ProfilFragment()
+                        true
+                    }else false
                 }
                 else -> false
             }
