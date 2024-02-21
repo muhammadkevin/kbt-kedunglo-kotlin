@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kbtkedunglo.R
-import com.example.kbtkedunglo.pages.DetailTimeLineFragment
 import com.example.kbtkedunglo.pages.reusable.CommentPostFragment
 import com.example.kbtkedunglo.pages.reusable.LikePostFragment
 import com.example.kbtkedunglo.utilsclass.formatDurationMedal
@@ -35,7 +34,7 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
     class TimeLineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val namaUser:TextView = itemView.findViewById(R.id.username)
         val namaevent: TextView = itemView.findViewById(R.id.namaevent)
-        val mapThumbnailView: ImageView = itemView.findViewById(R.id.imagethumb)
+//        val mapThumbnailView: ImageView = itemView.findViewById(R.id.imagethumb)
         val jarakTempuh:TextView = itemView.findViewById(R.id.jaraktempuh)
         val avgSpeed:TextView = itemView.findViewById(R.id.avgspeed)
         val elevgain:TextView = itemView.findViewById(R.id.elevgain)
@@ -43,7 +42,7 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
         val detailTime:TextView = itemView.findViewById(R.id.detailtime)
         val profilImage:ImageView = itemView.findViewById(R.id.profileImage)
         val wrapContent:LinearLayout = itemView.findViewById(R.id.wrapContent)
-        val wrapMap:RelativeLayout = itemView.findViewById(R.id.wrapMap)
+//        val wrapMap:RelativeLayout = itemView.findViewById(R.id.wrapMap)
         val descriptionEvent:TextView = itemView.findViewById(R.id.descriptionEvent)
         val btLike:RelativeLayout = itemView.findViewById(R.id.btLike)
         val btComment:RelativeLayout = itemView.findViewById(R.id.btComment)
@@ -63,13 +62,12 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
     override fun onBindViewHolder(holder: TimeLineViewHolder, position: Int) {
         try {
             val eventData: JSONObject = eventArray.getJSONObject(position)
-            Log.i("KBTAPP", eventData.toString())
-            val kbtuserid = eventData.getString("kbtuser")
-            val eventid = eventData.getString("event")
-            val nama = eventData.getString("kbtuser_nama")
-            val eventName = eventData.getString("event_nama")
-            val mapThmb = eventData.getString("map_thumbnail")
-            val fotoUrl = eventData.getString("foto_url")
+//            val kbtuserid = eventData.getString("kbtuser")
+//            val eventid = eventData.getString("event")
+            val medalerNama = eventData.getString("medaler_nama")
+            val eventName = eventData.getString("title")
+//            val mapThmb = eventData.getString("map_thumbnail")
+            val medalerFoto = eventData.getString("medaler_foto")
             val distanceStr = eventData.getString("distance").toFloat()
             val avgSpeed = eventData.getString("average_speed").toFloat()
             val elevgain = eventData.getString("elevation_gain").toFloat()
@@ -79,7 +77,8 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
             val date = inputFormat.parse(waktu)
             val outputFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale("id"))
             outputFormat.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
-            val detailtimeR = outputFormat.format(date as Date)
+            val locationMedal = eventData.getString("location_medal")
+            val detailtimeR = "${outputFormat.format(date as Date)} - ${locationMedal}"
             val jaraktempuhR = (round(distanceStr * 100.0) / 100.0).toString()
             val avgspeedR = (round(avgSpeed * 100.0) / 100.0).toString()
             val elevationR = (round(elevgain * 100.0) / 100.0).toString()
@@ -89,39 +88,40 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
                 description = ""
             }
             holder.descriptionEvent.text = description
-            holder.namaUser.text = nama
+            holder.namaUser.text = medalerNama
             holder.detailTime.text = detailtimeR
             holder.namaevent.text = eventName
             holder.jarakTempuh.text = jaraktempuhR
             holder.avgSpeed.text = avgspeedR
             holder.elevgain.text = elevationR
             holder.duration.text = durationR
-            if(mapThmb != "null" && mapThmb != null){
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        val bitmap = withContext(Dispatchers.IO) {
-                            Picasso.get().load("https:kbt.us.to/${mapThmb}").get()
-                        }
-                        withContext(Dispatchers.Main) {
-                            holder.mapThumbnailView.setImageBitmap(bitmap)
-                        }
-                    } catch (e: Exception) {
-                        Log.e("KBTAPP", "Error draw image: ${e.message}")
-                        e.printStackTrace()
-                    }
-                }
-            }
-            if(fotoUrl != "null" && fotoUrl != null){
+//            if(mapThmb != "null" && mapThmb != null){
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    try {
+//                        val bitmap = withContext(Dispatchers.IO) {
+//                            Picasso.get().load("https:kbt.us.to/${mapThmb}").get()
+//                        }
+//                        withContext(Dispatchers.Main) {
+//                            holder.mapThumbnailView.setImageBitmap(bitmap)
+//                        }
+//                    } catch (e: Exception) {
+//                        Log.e("KBTAPP", "Error draw image: ${e.message}")
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+            if(medalerFoto != "null" && medalerFoto != null){
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val bitmapFtProfil = withContext(Dispatchers.IO) {
-                            Picasso.get().load("https://kbt.us.to/media/${fotoUrl}").get()
+                            Picasso.get().load("${medalerFoto}").get()
                         }
                         withContext(Dispatchers.Main) {
                             holder.profilImage.setImageBitmap(bitmapFtProfil)
                         }
                     } catch (e: Exception) {
-                        Log.e("KBTAPP", "Error draw image: ${e.message}")
+                        Log.e("KBTAPP", "Error draw image profil: ${e.message}")
+                        holder.profilImage.setImageResource(R.drawable.profilkosongl)
                         e.printStackTrace()
                     }
                 }
@@ -130,23 +130,23 @@ class TimeLineAdapter( private val eventArray: JSONArray, private val fragmentMa
             }
 
             // CLICK LISTENER
-            holder.wrapContent.setOnClickListener {
-                val fragment = DetailTimeLineFragment.newInstance(
-                    kbtuserid, eventid, nama, eventName, detailtimeR, jaraktempuhR, avgspeedR, elevationR,
-                    durationR, "https://kbt.us.to/media/${fotoUrl}"
-                )
-                fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit()
-            }
-            holder.wrapMap.setOnClickListener {
-                Log.d("KBTAPP", "KLIK DI MAP")
-            }
-            holder.whoLike.setOnClickListener { whoLikePost() }
-            holder.btLike.setOnClickListener { likePost() }
-            holder.btComment.setOnClickListener { commentPost() }
-            holder.btShare.setOnClickListener { sharePost() }
+//            holder.wrapContent.setOnClickListener {
+//                val fragment = DetailTimeLineFragment.newInstance(
+//                    kbtuserid, eventid, nama, eventName, detailtimeR, jaraktempuhR, avgspeedR, elevationR,
+//                    durationR, "https://kbt.us.to/media/${fotoUrl}"
+//                )
+//                fragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_container, fragment)
+//                    .addToBackStack(null)
+//                    .commit()
+//            }
+//            holder.wrapMap.setOnClickListener {
+//                Log.d("KBTAPP", "KLIK DI MAP")
+//            }
+//            holder.whoLike.setOnClickListener { whoLikePost() }
+//            holder.btLike.setOnClickListener { likePost() }
+//            holder.btComment.setOnClickListener { commentPost() }
+//            holder.btShare.setOnClickListener { sharePost() }
         } catch (e: Exception) {
             Log.e("KBTAPP", e.message.toString())
             e.printStackTrace()

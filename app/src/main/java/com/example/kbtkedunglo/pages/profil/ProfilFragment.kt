@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.kbtkedunglo.R
@@ -31,6 +32,7 @@ class ProfilFragment : Fragment() {
     private lateinit var profileImageView: CircleImageView
     private lateinit var tabLayout:TabLayout
     private lateinit var viewPager:ViewPager2
+    private lateinit var namaView:TextView
     private val coroutineImageProfile = CoroutineScope(Dispatchers.IO)
     private val sharedPreferences: SharedPreferences by lazy {
         requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
@@ -56,9 +58,11 @@ class ProfilFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profil_fragment_profil, container, false)
 //        profileImageView = view.findViewById(R.id.profileImage)
+        namaView = view.findViewById(R.id.namaText)
         tabLayout = view.findViewById(R.id.tab_layout)
         viewPager = view.findViewById(R.id.view_pager2)
 
+        namaView.text = nama
 //        profileImageView.setImageResource(R.drawable.profilkosongl)
 //        Log.i("KBTAPP", "foto url:${fotoUrl}")
 //        if(fotoUrl != null && fotoUrl != "null"){

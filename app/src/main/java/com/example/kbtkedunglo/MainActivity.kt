@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.example.kbtkedunglo.pages.BerandaFragment
+import com.example.kbtkedunglo.pages.beranda.BerandaFragment
 import com.example.kbtkedunglo.pages.DetailAfterMedalFragment
 import com.example.kbtkedunglo.pages.record.MedalFragment
 import com.example.kbtkedunglo.pages.profil.ProfilFragment

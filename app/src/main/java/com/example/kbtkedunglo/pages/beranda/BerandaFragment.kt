@@ -1,4 +1,4 @@
-package com.example.kbtkedunglo.pages.profil
+package com.example.kbtkedunglo.pages.beranda
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -22,13 +22,16 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
-
-class ActivitiesFragment : Fragment() {
+class BerandaFragment : Fragment() {
     private var accessToken:String? = null
     private lateinit var recyclerView: RecyclerView
-    private lateinit var context: Context
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var context:Context
     private lateinit var activity: FragmentActivity
-    private lateinit var swipeRefreshLayout:SwipeRefreshLayout
+    private var currentPage = 1
+    private var totalItems = 0
+    private var itemsPerPage = 10
+    private var statusGetNewActivity:Boolean = false
     private val sharedPreferences: SharedPreferences by lazy {
         requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
     }
@@ -36,8 +39,8 @@ class ActivitiesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {}
-        activity = requireActivity()
         context = requireContext()
+        activity = requireActivity()
         accessToken = sharedPreferences.getString("access_token", "")
     }
 
@@ -45,7 +48,7 @@ class ActivitiesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.profil_fragment_activities, container, false)
+        val view = inflater.inflate(R.layout.beranda_fragment_beranda, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         return view
@@ -53,33 +56,51 @@ class ActivitiesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getMyActivity()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
+        getActivity(1)
+        val layoutManagerRecycler = recyclerView.layoutManager as LinearLayoutManager
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = layoutManagerRecycler.childCount
+                val totalItemCount = layoutManagerRecycler.itemCount
+                val firstVisibleItemPosition = layoutManagerRecycler.findFirstVisibleItemPosition()
+                Log.v("KBTAPP", "firstVisivle ${firstVisibleItemPosition} + ${visibleItemCount} = ${totalItemCount}");
+                if(visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= (totalItemCount - 3) && statusGetNewActivity == false){
+                    currentPage = currentPage + 1
+                    Log.d("KBTAPP", "get item baru $currentPage")
+                    getActivity(currentPage)
+                }
+            }
+        })
         swipeRefreshLayout.setOnRefreshListener {
-            getMyActivity()
+            getActivity(1)
             swipeRefreshLayout.isRefreshing = false
         }
     }
 
-    private fun getMyActivity(){
+    private fun getActivity(page:Int){
+        statusGetNewActivity = true
         val apiclient = ApiClient()
-        apiclient.getDataWithToken("https://kbt.us.to/activity/report/geni/activities/", accessToken.toString(),
+        apiclient.getDataWithToken("https://kbt.us.to/activity/report/geni/activities/?page=${page}", accessToken.toString(),
             object: ApiResponseGet {
                 override fun onSuccess(response: String, code: Int) {
                     CoroutineScope(Dispatchers.Main).launch {
-                        Log.i("KBTAPP", "$code")
                         if(code == 200) {
                             try {
                                 val resp = JSONObject(response)
                                 val respArr = JSONArray(resp.getString("results"))
-                                Log.d("KBTAPP", response)
-                                val layoutManager = LinearLayoutManager(context)
-                                recyclerView.layoutManager = layoutManager
+                                totalItems = respArr.length()
                                 recyclerView.adapter = TimeLineAdapter(respArr, activity.supportFragmentManager)
+                                statusGetNewActivity = false
                             }catch (e:Exception){
+                                statusGetNewActivity = false
                                 Log.e("KBTAPP", e.message ?: "Error parsing response")
                             }
                         }else{
                             Log.e("KBTAPP", "terjadi kesalahan saat mengambil data")
+                            statusGetNewActivity = false
                         }
                     }
                 }

@@ -121,7 +121,6 @@ class LoginActivity : AppCompatActivity() {
     private fun saveDtAndRedirect(jsonObject: JSONObject){
         val editor = sharedPreferences.edit()
         editor.putString("username", jsonObject.getString("username"))
-        editor.putString("password", jsonObject.getString("password"))
         editor.putString("foto", jsonObject.getString("foto"))
         editor.putString("group_kbt", jsonObject.getString("group_kbt"))
         editor.putString("nama", jsonObject.getString("nama"))

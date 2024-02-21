@@ -144,23 +144,23 @@
                 android:text="21 s"
                 android:fontFamily="sans-serif-light"/>
         </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/wrapMap"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="277dp">
-            <ImageView
-                android:elevation="3dp"
-                android:id="@+id/imagethumb"
-                android:layout_width="match_parent"
-                android:layout_height="277dp" />
-            <ImageView
-                android:elevation="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="277dp"
-                android:src="@drawable/dummymap"
-                android:scaleType="centerCrop"/>
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/wrapMap"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="277dp">-->
+<!--            <ImageView-->
+<!--                android:elevation="3dp"-->
+<!--                android:id="@+id/imagethumb"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="277dp" />-->
+<!--            <ImageView-->
+<!--                android:elevation="2dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="277dp"-->
+<!--                android:src="@drawable/dummymap"-->
+<!--                android:scaleType="centerCrop"/>-->
+<!--        </RelativeLayout>-->
         <TextView
             android:paddingVertical="10dp"
             android:paddingLeft="@dimen/paddingPage"

@@ -58,4 +58,20 @@ class ApiClient {
             }
         })
     }
+
+    fun getDataWithToken(url:String, token:String, callback: ApiResponseGet){
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("Authorization", "Bearer $token")
+            .build()
+        client.newCall(request).enqueue(object: okhttp3.Callback{
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                callback.onSuccess(responseData.toString(), response.code)
+            }
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                callback.onFailure("Error: ${e.message}")
+            }
+        })
+    }
 }
