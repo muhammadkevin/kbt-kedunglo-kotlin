@@ -61,26 +61,29 @@ class BerandaFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         timeLineAdapter = TimeLineAdapter(activity.supportFragmentManager)
         recyclerView.adapter = timeLineAdapter
-        getActivity(1)
-        val layoutManagerRecycler = recyclerView.layoutManager as LinearLayoutManager
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val visibleItemCount = layoutManagerRecycler.childCount
-                val totalItemCount = layoutManagerRecycler.itemCount
-                val firstVisibleItemPosition = layoutManagerRecycler.findFirstVisibleItemPosition()
-                Log.v("KBTAPP", "firstVisivle ${firstVisibleItemPosition} + ${visibleItemCount} = ${totalItemCount}");
-                if(visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= (totalItemCount - 3) && statusGetNewActivity == false){
-                    currentPage = currentPage + 1
-                    Log.d("KBTAPP", "get item baru $currentPage")
-                    getActivity(currentPage)
-                }
-            }
-        })
-        swipeRefreshLayout.setOnRefreshListener {
-            getActivity(1)
-            swipeRefreshLayout.isRefreshing = false
-        }
+
+        //get AKTIVITAS
+//        getActivity(1)
+//        val layoutManagerRecycler = recyclerView.layoutManager as LinearLayoutManager
+//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val visibleItemCount = layoutManagerRecycler.childCount
+//                val totalItemCount = layoutManagerRecycler.itemCount
+//                val firstVisibleItemPosition = layoutManagerRecycler.findFirstVisibleItemPosition()
+//                Log.v("KBTAPP", "firstVisivle ${firstVisibleItemPosition} + ${visibleItemCount} = ${totalItemCount}");
+//                if(visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= (totalItemCount - 3) && statusGetNewActivity == false){
+//                    currentPage = currentPage + 1
+//                    Log.d("KBTAPP", "get item baru $currentPage")
+//                    getActivity(currentPage)
+//                }
+//            }
+//        })
+//        swipeRefreshLayout.setOnRefreshListener {
+//            getActivity(1)
+//            swipeRefreshLayout.isRefreshing = false
+//        }
+
     }
 
     private fun getActivity(page:Int){
