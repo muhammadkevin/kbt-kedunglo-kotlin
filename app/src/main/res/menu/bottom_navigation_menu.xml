@@ -1,0 +1,25 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_beranda"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Beranda" />
+<!--    <item-->
+<!--        android:id="@+id/menu_maps"-->
+<!--        android:icon="@drawable/ic_map"-->
+<!--        android:title="Maps" />-->
+<!--    <item-->
+<!--        android:id="@+id/menu_medal"-->
+<!--        android:icon="@drawable/ic_record"-->
+<!--        android:title="Medal" />-->
+    <item
+        android:id="@+id/menu_kbt"
+        android:icon="@drawable/ic_group"
+        android:title="KBT"
+        />
+    <item
+        android:id="@+id/menu_profil"
+        android:icon="@drawable/ic_task"
+        android:title="Profil"
+        />
+</menu>
